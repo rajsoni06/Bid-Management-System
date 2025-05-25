@@ -3,15 +3,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileText, Download, ExternalLink, Image, Archive, File } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export const AttachmentManager = () => {
+  const { toast } = useToast();
+  const [downloadingFiles, setDownloadingFiles] = useState<Set<number>>(new Set());
+
   const mockAttachments = [
     {
       id: 1,
       name: 'Construction_Proposal_2024.pdf',
       type: 'pdf',
       size: '2.4 MB',
-      driveLink: 'https://drive.google.com/file/d/example1',
+      driveLink: 'https://drive.google.com/file/d/1234567890/view',
+      downloadUrl: 'https://drive.google.com/uc?export=download&id=1234567890',
       emailSubject: 'Project Proposal - Construction Bid',
       uploadDate: '2024-01-15T10:30:00Z',
       downloadCount: 5
@@ -21,7 +27,8 @@ export const AttachmentManager = () => {
       name: 'Equipment_Rental_Rates.xlsx',
       type: 'spreadsheet',
       size: '1.2 MB',
-      driveLink: 'https://drive.google.com/file/d/example2',
+      driveLink: 'https://drive.google.com/file/d/0987654321/view',
+      downloadUrl: 'https://drive.google.com/uc?export=download&id=0987654321',
       emailSubject: 'Equipment Rental Quote Request',
       uploadDate: '2024-01-15T09:15:00Z',
       downloadCount: 3
@@ -31,7 +38,8 @@ export const AttachmentManager = () => {
       name: 'Site_Photos_January.zip',
       type: 'archive',
       size: '15.7 MB',
-      driveLink: 'https://drive.google.com/file/d/example3',
+      driveLink: 'https://drive.google.com/file/d/1122334455/view',
+      downloadUrl: 'https://drive.google.com/uc?export=download&id=1122334455',
       emailSubject: 'Weekly Site Progress Report',
       uploadDate: '2024-01-14T16:45:00Z',
       downloadCount: 8
@@ -41,12 +49,68 @@ export const AttachmentManager = () => {
       name: 'Compliance_Certificate.jpg',
       type: 'image',
       size: '847 KB',
-      driveLink: 'https://drive.google.com/file/d/example4',
+      driveLink: 'https://drive.google.com/file/d/6677889900/view',
+      downloadUrl: 'https://drive.google.com/uc?export=download&id=6677889900',
       emailSubject: 'Supplier Certification Documents',
       uploadDate: '2024-01-14T14:20:00Z',
       downloadCount: 2
     }
   ];
+
+  const handleDownload = async (attachment: typeof mockAttachments[0]) => {
+    try {
+      setDownloadingFiles(prev => new Set(prev).add(attachment.id));
+      
+      // Show download starting toast
+      toast({
+        title: "Download Started",
+        description: `Downloading ${attachment.name}...`,
+      });
+
+      // Simulate download delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Create a temporary link and trigger download
+      const link = document.createElement('a');
+      link.href = attachment.downloadUrl;
+      link.download = attachment.name;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Show success toast
+      toast({
+        title: "Download Complete",
+        description: `${attachment.name} has been downloaded successfully.`,
+      });
+
+      // Update download count (in real app, this would be an API call)
+      console.log(`Downloaded: ${attachment.name}`);
+      
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Download Failed",
+        description: `Failed to download ${attachment.name}. Please try again.`,
+      });
+      console.error('Download error:', error);
+    } finally {
+      setDownloadingFiles(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(attachment.id);
+        return newSet;
+      });
+    }
+  };
+
+  const handleViewInDrive = (attachment: typeof mockAttachments[0]) => {
+    window.open(attachment.driveLink, '_blank');
+    toast({
+      title: "Opening in Google Drive",
+      description: `Opening ${attachment.name} in a new tab...`,
+    });
+  };
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -146,6 +210,8 @@ export const AttachmentManager = () => {
           <div className="space-y-4">
             {mockAttachments.map((attachment) => {
               const FileIcon = getFileIcon(attachment.type);
+              const isDownloading = downloadingFiles.has(attachment.id);
+              
               return (
                 <div key={attachment.id} className="flex items-center justify-between p-4 bg-gray-50/50 rounded-lg hover:bg-gray-100/50 transition-colors duration-200">
                   <div className="flex items-center space-x-4 flex-1 min-w-0">
@@ -170,10 +236,21 @@ export const AttachmentManager = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm" className="bg-white/50">
-                      <Download className="w-4 h-4" />
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-white/50"
+                      onClick={() => handleDownload(attachment)}
+                      disabled={isDownloading}
+                    >
+                      <Download className={`w-4 h-4 ${isDownloading ? 'animate-pulse' : ''}`} />
                     </Button>
-                    <Button variant="outline" size="sm" className="bg-white/50">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-white/50"
+                      onClick={() => handleViewInDrive(attachment)}
+                    >
                       <ExternalLink className="w-4 h-4" />
                     </Button>
                   </div>

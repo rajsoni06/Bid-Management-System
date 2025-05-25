@@ -1,73 +1,126 @@
-# Welcome to your Lovable project
+# ✨ Supabase Auth App – Vite + React + ShadCN UI + TypeScript
 
-## Project info
+A modern web application built using **Vite**, **React**, **TypeScript**, and **Tailwind CSS** (styled via **ShadCN UI**) with backend support via **Supabase**.
 
-**URL**: https://lovable.dev/projects/add32dd2-fb66-4641-8a7f-34d335424825
+> ⚙️ Quickly bootstrapped using AI tools to accelerate frontend development and connected seamlessly to a Supabase backend for auth and data handling.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Tech Stack
 
-**Use Lovable**
+- ⚡ **Vite** – Lightning-fast bundler for modern web projects
+- ⚛️ **React** – UI library for building component-based apps
+- 🔐 **Supabase** – Open-source Firebase alternative for auth, database, and storage
+- 🦄 **ShadCN/UI** – Accessible components styled with Tailwind CSS
+- 🌪 **Tailwind CSS** – Utility-first CSS framework
+- 🧠 **TypeScript** – Type-safe development
+- 🐾 **ESLint & Prettier** – Linting and formatting for cleaner code
+- 🐰 **Bun** – (optional) Used for lock file and modern JS runtime
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/add32dd2-fb66-4641-8a7f-34d335424825) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📁 Project Structure
 
-**Use your preferred IDE**
+```bash
+├── public/                # Static assets
+├── src/                   # Main source code (components, pages, logic)
+├── supabase/              # Supabase configuration and service utils
+├── components.json        # ShadCN component mapping
+├── tailwind.config.ts     # TailwindCSS configuration
+├── vite.config.ts         # Vite configuration
+├── tsconfig*.json         # TypeScript configurations
+├── eslint.config.js       # ESLint configuration
+├── package.json           # Project metadata and scripts
+├── bun.lockb              # Bun lock file (if Bun used)
+└── README.md              # Project documentation
+````
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🔧 Getting Started
 
-Follow these steps:
+### 1. Clone the repo
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Install dependencies
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+npm install
+# or
+bun install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 3. Set up Supabase
+
+* Create a project at [https://supabase.com](https://supabase.com)
+* Get your `SUPABASE_URL` and `SUPABASE_ANON_KEY`
+* Create a `.env` file and add:
+
+```env
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 4. Run the development server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## ✅ Features
 
-**Use GitHub Codespaces**
+* 🔐 Supabase email/password authentication
+* 🎨 Pre-built UI components with ShadCN (Buttons, Forms, Cards, etc.)
+* 💨 Tailwind CSS utility classes for rapid design
+* ⚙️ Modular code structure
+* 🌐 Fast Vite dev server and HMR
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🧪 Scripts
 
-This project is built with:
+```bash
+npm run dev        # Start dev server
+npm run build      # Build for production
+npm run lint       # Run ESLint
+npm run preview    # Preview production build
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 📦 Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/add32dd2-fb66-4641-8a7f-34d335424825) and click on Share -> Publish.
+You can deploy this app easily to:
 
-## Can I connect a custom domain to my Lovable project?
+* **Vercel**
+* **Netlify**
+* **Cloudflare Pages**
 
-Yes, you can!
+Just make sure to include the `.env` variables in your dashboard.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🤖 Built With Help From AI
+
+Bootstrapped and scaffolded using AI tools to speed up initial development and component design.
+
+---
+
+## 🙌 Credits
+
+* [ShadCN UI](https://ui.shadcn.dev/)
+* [Vite](https://vitejs.dev/)
+* [Supabase](https://supabase.com/)
+* [Tailwind CSS](https://tailwindcss.com/)

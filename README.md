@@ -1,9 +1,9 @@
-# ✨ Supabase Auth App – Vite + React + ShadCN UI + TypeScript
+## 📬 Project Overview: Email Archiving with OAuth Integration
 
-A modern web application built using **Vite**, **React**, **TypeScript**, and **Tailwind CSS** (styled via **ShadCN UI**) with backend support via **Supabase**.
+This project is part of an **Email-Based Bid Management System**, focusing on securely archiving emails and attachments using **Gmail API**, **Google Drive**, and **OAuth 2.0**. It fetches and stores emails from authorized Gmail accounts, saves metadata in a **PostgreSQL** database, and uploads attachments to **Google Drive**. This foundational service enables future extensions like bid classification and multi-vendor tracking.
 
-> ⚙️ Quickly bootstrapped using AI tools to accelerate frontend development and connected seamlessly to a Supabase backend for auth and data handling.
-
+> 🔐 OAuth-secured, metadata-driven, and built for scalability.
+> ✨ Supabase Auth App – Vite + React + ShadCN UI + TypeScript
 ---
 
 ## 🚀 Tech Stack

@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, FileText, Users, Clock, TrendingUp, Database } from 'lucide-react';
+import { Mail, FileText, Users, Clock, TrendingUp, Database, ChartBar, Shield } from 'lucide-react';
 
 export const DashboardOverview = () => {
   const stats = [
@@ -90,7 +90,7 @@ export const DashboardOverview = () => {
             <div className="h-64 flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="w-8 h-8 text-white" />
+                  <ChartBar className="w-8 h-8 text-white" />
                 </div>
                 <p className="text-gray-600">Chart visualization will be implemented</p>
                 <p className="text-sm text-gray-500">with Recharts integration</p>

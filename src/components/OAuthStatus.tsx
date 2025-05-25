@@ -1,12 +1,24 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Shield, CheckCircle, AlertCircle, Clock, RefreshCw, Settings } from 'lucide-react';
+import { Shield, CheckCircle, AlertCircle, Clock, RefreshCw, Settings, MoreVertical } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useToast } from '@/hooks/use-toast';
 
 export const OAuthStatus = () => {
+  const { toast } = useToast();
+  const [refreshingTokens, setRefreshingTokens] = useState<string[]>([]);
+
   const oAuthServices = [
     {
+      id: 'gmail',
       name: 'Gmail API',
       status: 'connected',
       lastRefresh: '2024-01-15T10:30:00Z',
@@ -15,6 +27,7 @@ export const OAuthStatus = () => {
       tokenHealth: 'healthy'
     },
     {
+      id: 'drive',
       name: 'Google Drive API',
       status: 'connected',
       lastRefresh: '2024-01-15T10:30:00Z',
@@ -23,6 +36,57 @@ export const OAuthStatus = () => {
       tokenHealth: 'healthy'
     }
   ];
+
+  const handleRefreshToken = async (serviceId: string, serviceName: string) => {
+    setRefreshingTokens(prev => [...prev, serviceId]);
+    
+    // Simulate API call
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Token Refreshed",
+        description: `${serviceName} token has been successfully refreshed.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Refresh Failed",
+        description: `Failed to refresh ${serviceName} token. Please try again.`,
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshingTokens(prev => prev.filter(id => id !== serviceId));
+    }
+  };
+
+  const handleRefreshAllTokens = async () => {
+    const allServiceIds = oAuthServices.map(service => service.id);
+    setRefreshingTokens(allServiceIds);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      toast({
+        title: "All Tokens Refreshed",
+        description: "All OAuth tokens have been successfully refreshed.",
+      });
+    } catch (error) {
+      toast({
+        title: "Refresh Failed",
+        description: "Failed to refresh some tokens. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setRefreshingTokens([]);
+    }
+  };
+
+  const handleUpdateScopes = () => {
+    toast({
+      title: "Update Scopes",
+      description: "Scope update functionality would be implemented here.",
+    });
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -101,6 +165,8 @@ export const OAuthStatus = () => {
       <div className="space-y-4">
         {oAuthServices.map((service) => {
           const StatusIcon = getStatusIcon(service.status);
+          const isRefreshing = refreshingTokens.includes(service.id);
+          
           return (
             <Card key={service.name} className="bg-white/80 backdrop-blur-sm border-white/20">
               <CardContent className="p-6">
@@ -116,10 +182,40 @@ export const OAuthStatus = () => {
                       </Badge>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="bg-white/50 border-white/20">
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Refresh Token
-                  </Button>
+                  <div className="flex items-center space-x-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-white/50 border-white/20"
+                      onClick={() => handleRefreshToken(service.id, service.name)}
+                      disabled={isRefreshing}
+                    >
+                      <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                      {isRefreshing ? 'Refreshing...' : 'Refresh Token'}
+                    </Button>
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="bg-white/50 border-white/20">
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleRefreshToken(service.id, service.name)}>
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Refresh Token
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleUpdateScopes}>
+                          <Settings className="w-4 h-4 mr-2" />
+                          Update Scopes
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <AlertCircle className="w-4 h-4 mr-2" />
+                          View Logs
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -168,15 +264,26 @@ export const OAuthStatus = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button variant="outline" className="bg-white/50 border-white/20 h-auto p-4 flex flex-col items-start space-y-2">
+            <Button 
+              variant="outline" 
+              className="bg-white/50 border-white/20 h-auto p-4 flex flex-col items-start space-y-2"
+              onClick={handleRefreshAllTokens}
+              disabled={refreshingTokens.length > 0}
+            >
               <div className="flex items-center space-x-2">
-                <RefreshCw className="w-4 h-4" />
-                <span className="font-medium">Refresh All Tokens</span>
+                <RefreshCw className={`w-4 h-4 ${refreshingTokens.length > 0 ? 'animate-spin' : ''}`} />
+                <span className="font-medium">
+                  {refreshingTokens.length > 0 ? 'Refreshing All...' : 'Refresh All Tokens'}
+                </span>
               </div>
               <span className="text-sm text-gray-600 text-left">Manually refresh all OAuth tokens</span>
             </Button>
             
-            <Button variant="outline" className="bg-white/50 border-white/20 h-auto p-4 flex flex-col items-start space-y-2">
+            <Button 
+              variant="outline" 
+              className="bg-white/50 border-white/20 h-auto p-4 flex flex-col items-start space-y-2"
+              onClick={handleUpdateScopes}
+            >
               <div className="flex items-center space-x-2">
                 <Settings className="w-4 h-4" />
                 <span className="font-medium">Update Scopes</span>

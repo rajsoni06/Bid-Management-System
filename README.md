@@ -6,7 +6,7 @@ This project is part of an **Email-Based Bid Management System**, focusing on se
 > ✨ Supabase Auth App – Vite + React + ShadCN UI + TypeScript
 ---
 ![image](https://github.com/user-attachments/assets/155b2dbe-eb7f-4401-9858-ce0ccefd8a5a)
-![image](https://github.com/user-attachments/assets/77fe7456-74ca-4538-b822-1c6bfde56c63)
+![image](https://github.com/user-attachments/assets/d2ed12cd-f2aa-41c8-b0be-494e87dbccd8)
 ![image](https://github.com/user-attachments/assets/628b3cf7-2fa0-4660-91a1-01c21a4796ef)
 
 ## 🚀 Tech Stack
